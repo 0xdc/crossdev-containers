@@ -1,0 +1,8 @@
+#!/bin/bash
+
+docker image build $@ . -t applehq/crossdev:arm
+for i in 4.9.4 5.4.0-r4 6.4.0-r1; do
+	docker image build . -t applehq/crossdev:arm-$i --build-arg version=$i
+	docker image build . -t applehq/crossdev:avr-$i --build-arg version=$i --build-arg tuple=avr
+done
+
