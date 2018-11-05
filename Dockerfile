@@ -16,3 +16,5 @@ RUN rm -fr /usr/portage
 ENV ARCH=arm
 ENV CROSS_COMPILE="${tuple}-"
 ENV VERSION="${version}"
+
+ADD pull-build-kernel /usr/local/bin

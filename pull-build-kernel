@@ -1,0 +1,40 @@
+#!/bin/bash
+
+while getopts "b:i:d:g:" opt; do
+	case $opt in
+	b)
+		BRANCH="$OPTARG"
+		;;
+	i)
+		IMAGE="$OPTARG"
+		;;
+	d)
+		DEFCONFIG="$OPTARG"
+		;;
+	g)
+		GIT_REPO="$OPTARG"
+		;;
+	esac
+done
+
+SRCDIR=/usr/src/linux
+
+if test -d $SRCDIR/.git; then
+	pushd $SRCDIR
+	git pull --ff-only $GIT_REPO $BRANCH
+else
+	if test "$BRANCH"; then
+		git clone -b $BRANCH $GIT_REPO $SRCDIR
+	else
+		git clone $GIT_REPO $SRCDIR
+	fi
+	pushd $SRCDIR
+fi
+
+make ${DEFCONFIG}_defconfig || {
+	if test -x ./chromeos/scripts/prepareconfig; then
+		./chromeos/scripts/prepareconfig $DEFCONFIG
+		./scripts/config -d ERROR_ON_WARNING
+	fi
+}
+make $IMAGE dtbs LOADADDR=0x8000 -j$(nproc)
