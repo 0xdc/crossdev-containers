@@ -26,3 +26,16 @@ Specifically, the following targets are known to work on the following applicati
 	arm 6.4.0-r1 - samsung series 3 stable kernel
 
 All other targets are there to test the version of gcc with the intended application.
+
+pull-build-kernel (arm)
+-----------------
+
+This script pulls down a git repo/branch and builds a kernel from it.
+
+You can select which compiler version to use by selecting one of the different
+container image versions.
+
+It is recommended to `docker run` with `--rm`, you can get data out of the
+container by mounting a volume on `/usr/src/linux`.
+
+An example of its use can be found in the `arm-kernels` script.
