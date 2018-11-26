@@ -31,10 +31,10 @@ else
 	pushd $SRCDIR
 fi
 
-make ${DEFCONFIG}_defconfig || {
-	if test -x ./chromeos/scripts/prepareconfig; then
-		./chromeos/scripts/prepareconfig $DEFCONFIG
-		./scripts/config -d ERROR_ON_WARNING
-	fi
-}
+if test -x ./chromeos/scripts/prepareconfig; then
+	./chromeos/scripts/prepareconfig $DEFCONFIG
+	./scripts/config -d ERROR_ON_WARNING
+else
+	make ${DEFCONFIG}_defconfig
+fi
 make $IMAGE dtbs LOADADDR=0x8000 -j$(nproc)
