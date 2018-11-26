@@ -3,7 +3,6 @@
 RUNLIST=(
 	stable:linux-4.14.y:zImage:exynos:arm
 	chromium:chromeos-3.8-fixes:zImage:chromeos-exynos5:arm-5.4.0-r4
-	chromium:chromeos-3.8-fixes:zImage:chromeos-exynos5:arm-6.4.0-r1
 	stable:linux-4.14.y:uImage:multi_v7:arm
 )
 
