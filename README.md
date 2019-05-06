@@ -28,6 +28,9 @@ Specifically, the following targets are known to work on the following applicati
 
 All other targets are there to test the version of gcc with the intended application.
 
+For some reason, glibc-2.28-r6 only builds with gcc-8.2.0-r6, so older gcc
+versions use the older glibc-2.27-r6.
+
 pull-build-kernel (arm)
 -----------------
 
