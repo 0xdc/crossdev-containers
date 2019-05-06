@@ -17,7 +17,8 @@ We use the following stable versions of gcc:
 	4.9.4
 	5.4.0-r4
 	6.4.0-r1
-	stable (7.3.0-r3)
+	7.3.0-r3
+	stable (8.2.0-r6)
 
 Specifically, the following targets are known to work on the following applications:
 
