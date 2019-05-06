@@ -9,7 +9,7 @@ ADD layout.conf /usr/local/portage-crossdev/metadata/layout.conf
 ADD crossdev.conf /etc/portage/repos.conf/
 RUN emerge --quiet-build crossdev bc u-boot-tools dtc dev-vcs/git
 ARG version=""
-ARG tuple="armv7a-hardfloat-linux-gnueabi"
+ARG tuple="armv7a-unknown-linux-gnueabihf"
 RUN crossdev -t $tuple -S --gcc $version
 RUN rm -fr /usr/portage
 
