@@ -13,7 +13,8 @@ ARG tuple="armv7a-unknown-linux-gnueabihf"
 RUN crossdev -t $tuple -S --gcc $version
 RUN rm -fr /usr/portage
 
-ENV ARCH=arm
+ARG arch="arm"
+ENV ARCH="${arch}"
 ENV CROSS_COMPILE="${tuple}-"
 ENV VERSION="${version}"
 
