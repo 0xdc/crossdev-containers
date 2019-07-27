@@ -19,3 +19,7 @@ ENV CROSS_COMPILE="${tuple}-"
 ENV VERSION="${version}"
 
 ADD pull-build-kernel /usr/local/bin
+
+ADD ice-cross-toolchain /usr/local/bin
+VOLUME /app
+RUN ice-cross-toolchain $tuple

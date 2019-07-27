@@ -1,0 +1,23 @@
+#!/bin/bash
+
+set -ex
+tuple="$1"
+
+pushd $(mktemp -d)
+	for prog in true ${tuple}-as ${tuple}-gcc ${tuple}-g++; do
+		which -- "${prog}" || continue
+		which="$(which -- $prog)"
+		dir="$(dirname $which)"
+
+		test -d .$dir || mkdir -p .$dir
+		cp "$which" ".$dir"
+	done
+	find . -type f | xargs -n1 ldd | awk '/=>/{print$3}' | \
+			while read lib; do
+		dir="$(dirname $lib)"
+
+		test -d .$dir || mkdir -p .$dir
+		cp "$lib" ".$dir"
+	done
+	tar cvf /app/amd64_${tuple}.tgz .
+popd
