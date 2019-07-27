@@ -14,7 +14,7 @@ for i in ${RUNLIST[*]}; do
 	version=$(awk -F: '{print$5}' <<<$i)
 
 	docker run --rm -it \
-		--mount "type=volume,source=$repo-$defconfig-$version,dst=/usr/src/linux" \
+		--mount "type=volume,source=$repo-$defconfig-$version-$branch,dst=/usr/src/linux" \
 		applehq/crossdev:${version} \
 		pull-build-kernel \
 		-g https://xxoo.ws/kernel/${repo}.git/ \
