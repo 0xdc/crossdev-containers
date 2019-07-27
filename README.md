@@ -26,6 +26,7 @@ Specifically, the following targets are known to work on the following applicati
 	avr-4.9.4 - for ergodox keyboards/teensy
 	arm-5.4.0-r4 - hp chromebook 11 g1 chromeOS kernel
 	arm stable - samsung series 3 stable kernel
+	arm64 7.3.0-r3 - rock960c 4.4 kernel
 
 All other targets are there to test the version of gcc with the intended application.
 
