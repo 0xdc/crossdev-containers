@@ -38,3 +38,7 @@ else
 	make ${DEFCONFIG}_defconfig
 fi
 make $IMAGE dtbs LOADADDR=0x8000 -j$(nproc)
+if grep -q CONFIG_MODULES=y .config; then
+	make modules -j$(nproc)
+	make INSTALL_MOD_PATH="$(pwd)" modules_install
+fi
