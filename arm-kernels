@@ -1,9 +1,17 @@
 #!/bin/bash
 
 RUNLIST=(
+	# daisy (snow)
 	stable:linux-4.19.y:zImage:exynos:arm
+
+	# hp 11 (spring)
 	chromium:chromeos-3.8-fixes:zImage:chromeos-exynos5:arm-5.4.0-r4
+	# ...try 5.4.0 on upstream
+	stable:linux-4.14.y:zImage:exynos:arm-5.4.0-r4
+
+	# parallella
 	stable:linux-4.14.y:uImage:multi_v7:arm
+	stable:linux-4.19.y:uImage:multi_v7:arm
 )
 
 for i in ${RUNLIST[*]}; do
