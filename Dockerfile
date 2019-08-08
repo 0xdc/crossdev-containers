@@ -1,7 +1,7 @@
 FROM gentoo/portage as porttree
 
 FROM gentoo/stage3-amd64 as crossdev
-COPY --from=porttree /usr/portage /usr/portage
+COPY --from=porttree /var/db/repos/gentoo /var/db/repos/gentoo
 
 ADD repo_name /usr/local/portage-crossdev/profiles/repo_name
 ADD layout.conf /usr/local/portage-crossdev/metadata/layout.conf
