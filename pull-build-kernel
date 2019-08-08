@@ -37,6 +37,21 @@ if test -x ./chromeos/scripts/prepareconfig; then
 else
 	make ${DEFCONFIG}_defconfig
 fi
+
+### Enable Kernel Options
+for i in SQUASHFS NFS_FS NFS_V4; do
+	if grep -q CONFIG_MODULES=y .config; then
+		./scripts/config -m $i
+	else
+		./scripts/config -e $i
+	fi
+done
+make olddefconfig
+# These appear after enabling the previous set of options
+for i in SQUASHFS_LZO SQUASHFS_XZ; do
+	./scripts/config -e $i
+done
+
 make $IMAGE dtbs LOADADDR=0x8000 -j$(nproc)
 if grep -q CONFIG_MODULES=y .config; then
 	make modules -j$(nproc)
