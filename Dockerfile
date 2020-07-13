@@ -7,6 +7,7 @@ ADD repo_name /var/db/repos/crossdev/profiles/repo_name
 ADD layout.conf /var/db/repos/crossdev/metadata/layout.conf
 
 ADD crossdev.conf /etc/portage/repos.conf/
+RUN (qlist -IC 'virtual/perl*'; qlist -IC 'dev-perl/*') | xargs emerge --oneshot --quiet-build dev-lang/perl texinfo po4a
 RUN emerge --quiet-build crossdev bc u-boot-tools dtc dev-vcs/git
 ARG version=""
 ARG tuple="armv7a-unknown-linux-gnueabihf"
