@@ -1,20 +1,34 @@
 #!/bin/bash
 
+declare -A u=(
+	[stable]=https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git
+	[chromium]=https://chromium.googlesource.com/chromiumos/third_party/kernel
+	[parallella]=https://github.com/parallella/parallella-linux
+	[rock960]=https://github.com/96rocks/kernel
+)
+
+
 RUNLIST=(
 	# daisy (snow)
-	stable:linux-4.19.y:zImage:exynos:arm
+	stable:linux-5.4.y:zImage:exynos:arm
 
 	# hp 11 (spring)
-	chromium:chromeos-3.8-fixes:zImage:chromeos-exynos5:arm-5.4.0-r4
+	#chromium:chromeos-3.8-fixes:zImage:chromeos-exynos5:arm-5.4.0-r4
+	chromium:chromeos-3.8:zImage:chromeos-exynos5:arm-5.4.0-r4
 	# ...try 5.4.0 on upstream
 	stable:linux-4.14.y:zImage:exynos:arm-5.4.0-r4
+	stable:linux-5.4.y:zImage:exynos:arm-5.4.0-r4
+	stable:linux-5.4.y:zImage:exynos:arm
 
 	# parallella
 	stable:linux-4.14.y:uImage:multi_v7:arm
 	stable:linux-4.19.y:uImage:multi_v7:arm
+	stable:linux-5.4.y:uImage:multi_v7:arm
+	parallella:parallella-linux-2019.1:uImage:parallella:arm
 
 	# rock960c
 	rock960:release-4.4-rock960:Image:rockchip_linux:arm64-7.3.0-r3
+	rock960:release-4.4-rock960:Image:rockchip_linux:arm64
 )
 
 for i in ${RUNLIST[*]}; do
@@ -28,7 +42,7 @@ for i in ${RUNLIST[*]}; do
 		--mount "type=volume,source=$repo-$defconfig-$version-$branch,dst=/usr/src/linux" \
 		applehq/crossdev:${version} \
 		pull-build-kernel \
-		-g https://xxoo.ws/kernel/${repo}.git/ \
+		-g ${u[$repo]} \
 		-b $branch \
 		-i $image \
 		-d $defconfig
