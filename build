@@ -2,7 +2,7 @@
 
 stable="9.3.0-r1"
 
-for i in $stable 9.2.0-r2 8.3.0-r1; do
+for i in $stable 9.2.0-r2 8.4.0-r1; do
 	docker image build . -t applehq/crossdev:arm-$i   --build-arg version=$i
 	docker image build . -t applehq/crossdev:avr-$i   --build-arg version=$i --build-arg tuple=avr
 	docker image build . -t applehq/crossdev:arm64-$i --build-arg version=$i --build-arg tuple=aarch64-unknown-linux-gnu --build-arg arch=arm64
@@ -13,7 +13,7 @@ docker tag applehq/crossdev:avr-$stable   applehq/crossdev:avr
 docker tag applehq/crossdev:arm64-$stable applehq/crossdev:arm64
 
 # GCC lower than 7.3 needs an older libc
-for i in 5.5.0 6.5.0-r1 7.4.0-r2; do
+for i in 5.5.0 6.5.0-r1 7.5.0-r1; do
 	docker image build . -t applehq/crossdev:arm-$i   --build-arg version=$i -f Dockerfile.oldlibc
 	docker image build . -t applehq/crossdev:avr-$i   --build-arg version=$i --build-arg tuple=avr
 	docker image build . -t applehq/crossdev:arm64-$i --build-arg version=$i --build-arg tuple=aarch64-unknown-linux-gnu --build-arg arch=arm64 -f Dockerfile.oldlibc
