@@ -12,7 +12,7 @@ RUN emerge --quiet-build crossdev bc u-boot-tools dtc dev-vcs/git
 ARG version=""
 ARG tuple="armv7a-unknown-linux-gnueabihf"
 RUN crossdev -t $tuple -S --gcc $version
-RUN rm -fr /usr/portage
+RUN rm -fr /var/db/repos/gentoo
 
 ARG arch="arm"
 ENV ARCH="${arch}"

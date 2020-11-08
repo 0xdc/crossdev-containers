@@ -1,7 +1,7 @@
 FROM gentoo/portage as porttree
 
 FROM gentoo/stage3-amd64 as crossdev
-COPY --from=porttree /usr/portage /usr/portage
+COPY --from=porttree /var/db/repos/gentoo /var/db/repos/gentoo
 
 ADD repo_name /var/db/repos/crossdev/profiles/repo_name
 ADD layout.conf /var/db/repos/crossdev/metadata/layout.conf
@@ -12,7 +12,7 @@ RUN emerge --quiet-build crossdev bc u-boot-tools dtc dev-vcs/git
 ARG version=""
 ARG tuple="armv7a-unknown-linux-gnueabihf"
 RUN crossdev -t $tuple -S --gcc $version --libc 2.27-r6
-RUN rm -fr /usr/portage
+RUN rm -fr /var/db/repos/gentoo
 
 ARG arch="arm"
 ENV ARCH="${arch}"
