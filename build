@@ -1,27 +1,28 @@
 #!/bin/bash
 
 stable="9.3.0-r1"
+image=localhost/crossdev
 
 for i in $stable 9.2.0-r2 8.4.0-r1; do
-	docker image build . -t applehq/crossdev:arm-$i   --build-arg version=$i
-	docker image build . -t applehq/crossdev:avr-$i   --build-arg version=$i --build-arg tuple=avr
-	docker image build . -t applehq/crossdev:arm64-$i --build-arg version=$i --build-arg tuple=aarch64-unknown-linux-gnu --build-arg arch=arm64
+	podman image exists $image/arm:$i || podman image build . -t $image/arm:$i   --build-arg version=$i
+	podman image exists $image/avr:$i || podman image build . -t $image/avr:$i   --build-arg version=$i --build-arg tuple=avr
+	podman image exists $image/arm64:$i || podman image build . -t $image/arm64:$i --build-arg version=$i --build-arg tuple=aarch64-unknown-linux-gnu --build-arg arch=arm64
 done
 
-docker tag applehq/crossdev:arm-$stable   applehq/crossdev:arm
-docker tag applehq/crossdev:avr-$stable   applehq/crossdev:avr
-docker tag applehq/crossdev:arm64-$stable applehq/crossdev:arm64
+podman tag $image/arm:$stable   $image/arm:latest
+podman tag $image/avr:$stable   $image/avr:latest
+podman tag $image/arm64:$stable $image/arm64:latest
 
 # GCC lower than 7.3 needs an older libc
 for i in 5.5.0 6.5.0-r1 7.5.0-r1; do
-	docker image build . -t applehq/crossdev:arm-$i   --build-arg version=$i -f Dockerfile.oldlibc
-	docker image build . -t applehq/crossdev:avr-$i   --build-arg version=$i --build-arg tuple=avr
-	docker image build . -t applehq/crossdev:arm64-$i --build-arg version=$i --build-arg tuple=aarch64-unknown-linux-gnu --build-arg arch=arm64 -f Dockerfile.oldlibc
+	podman image exists $image/arm:$i || podman image build . -t $image/arm:$i   --build-arg version=$i -f Dockerfile.oldlibc
+	podman image exists $image/avr:$i || podman image build . -t $image/avr:$i   --build-arg version=$i --build-arg tuple=avr
+	podman image exists $image/arm64:$i || podman image build . -t $image/arm64:$i --build-arg version=$i --build-arg tuple=aarch64-unknown-linux-gnu --build-arg arch=arm64 -f Dockerfile.oldlibc
 done
 # arm64 (aarch64) doesn't work in 4.9.4
 for i in 4.9.4-r1; do
-	docker image build . -t applehq/crossdev:arm-$i   --build-arg version=$i -f Dockerfile.oldlibc
-	docker image build . -t applehq/crossdev:avr-$i   --build-arg version=$i --build-arg tuple=avr
+	podman image exists $image/arm:$i || podman image build . -t $image/arm:$i   --build-arg version=$i -f Dockerfile.oldlibc
+	podman image exists $image/avr:$i || podman image build . -t $image/avr:$i   --build-arg version=$i --build-arg tuple=avr
 done
 
-docker image list
+podman image list
