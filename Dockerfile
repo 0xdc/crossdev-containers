@@ -20,8 +20,3 @@ ARG arch="arm"
 ENV ARCH="${arch}"
 ENV CROSS_COMPILE="${tuple}-"
 ENV VERSION="${version}"
-
-
-ADD ice-cross-toolchain /usr/local/bin
-VOLUME /app
-RUN ice-cross-toolchain $tuple

@@ -1,10 +1,9 @@
 #!/bin/bash
 
 set -ex
-tuple="$1"
 
 pushd $(mktemp -d)
-	for prog in true ${tuple}-as ${tuple}-gcc ${tuple}-g++; do
+	for prog in true ${CROSS_COMPILE}as ${CROSS_COMPILE}gcc ${CROSS_COMPILE}g++; do
 		which -- "${prog}" || continue
 		which="$(which -- $prog)"
 		dir="$(dirname $which)"
@@ -19,5 +18,5 @@ pushd $(mktemp -d)
 		test -d .$dir || mkdir -p .$dir
 		cp "$lib" ".$dir"
 	done
-	tar cvf /app/amd64_${tuple}.tgz .
+	tar cvf /app/amd64_${CROSS_COMPILE}${VERSION}.tgz .
 popd
