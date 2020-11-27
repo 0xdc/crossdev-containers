@@ -1,22 +1,30 @@
 #!/bin/bash
 
-set -ex
+if test -f /.dockerenv || test -f /run/.containerenv; then
+	set -e
+	pushd $(mktemp -d)
+		for prog in true ${CROSS_COMPILE}as ${CROSS_COMPILE}gcc ${CROSS_COMPILE}g++; do
+			which -- "${prog}" || continue
+			which="$(which -- $prog)"
+			dir="$(dirname $which)"
 
-pushd $(mktemp -d)
-	for prog in true ${CROSS_COMPILE}as ${CROSS_COMPILE}gcc ${CROSS_COMPILE}g++; do
-		which -- "${prog}" || continue
-		which="$(which -- $prog)"
-		dir="$(dirname $which)"
+			test -d .$dir || mkdir -p .$dir
+			cp "$which" ".$dir"
+		done
+		find . -type f | xargs -n1 ldd | awk '/=>/{print$3}' | \
+				while read lib; do
+			dir="$(dirname $lib)"
 
-		test -d .$dir || mkdir -p .$dir
-		cp "$which" ".$dir"
+			test -d .$dir || mkdir -p .$dir
+			cp "$lib" ".$dir"
+		done
+		tar cvf /app/amd64_${ARCH}-${VERSION}.tgz .
+	popd
+else
+	for i in $(./gccv.py); do
+		for j in arm arm64; do
+			image=applehq/crossdev:${j}-${i}
+			podman run --rm -v $(readlink -f $(dirname $0)):/app $image /app/ice-cross-toolchain
+		done
 	done
-	find . -type f | xargs -n1 ldd | awk '/=>/{print$3}' | \
-			while read lib; do
-		dir="$(dirname $lib)"
-
-		test -d .$dir || mkdir -p .$dir
-		cp "$lib" ".$dir"
-	done
-	tar cvf /app/amd64_${CROSS_COMPILE}${VERSION}.tgz .
-popd
+fi
