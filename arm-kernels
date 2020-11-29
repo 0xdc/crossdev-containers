@@ -21,7 +21,6 @@ RUNLIST=(
 	stable:linux-5.4.y:zImage:exynos:arm
 
 	# parallella
-	stable:linux-4.14.y:uImage:multi_v7:arm
 	stable:linux-4.19.y:uImage:multi_v7:arm
 	stable:linux-5.4.y:uImage:multi_v7:arm
 	parallella:parallella-linux-2019.1:uImage:parallella:arm
