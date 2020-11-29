@@ -21,7 +21,7 @@ if test -f /.dockerenv || test -f /run/.containerenv; then
 		tar cvf /app/amd64_${ARCH}-${VERSION}.tgz .
 	popd
 else
-	for i in $(./gccv.py); do
+	for i in ${@:-$(./gccv.py)}; do
 		for j in arm arm64; do
 			image=applehq/crossdev:${j}-${i}
 			podman run --rm -v $(readlink -f $(dirname $0)):/app $image /app/ice-cross-toolchain
