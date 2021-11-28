@@ -1,0 +1,8 @@
+[Unit]
+Description=Build docker containers
+Requires=docker.service
+
+[Service]
+WorkingDirectory=/root/crossdev-containers
+ExecStart=
+ExecStart=sh -c "docker system prune -af && /root/crossdev-containers/build && /root/crossdev-containers/upload && /root/crossdev-containers/arm-kernels"
