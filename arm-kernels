@@ -36,7 +36,7 @@ for i in ${RUNLIST[*]}; do
 
 	docker run --rm -i \
 		--mount "type=volume,source=$repo-$defconfig-$version-$branch,dst=/usr/src/linux" \
-		applehq/crossdev:${version} \
+		docker-hub.registry.condi.me/applehq/crossdev:${version} \
 		pull-build-kernel \
 		-g ${u[$repo]} \
 		-b $branch \
