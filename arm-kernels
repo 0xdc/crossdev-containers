@@ -34,7 +34,7 @@ for i in ${RUNLIST[*]}; do
 	defconfig=$(awk -F: '{print$4}' <<<$i)
 	version=$(awk -F: '{print$5}' <<<$i)
 
-	docker run --rm -it \
+	docker run --rm -i \
 		--mount "type=volume,source=$repo-$defconfig-$version-$branch,dst=/usr/src/linux" \
 		applehq/crossdev:${version} \
 		pull-build-kernel \
