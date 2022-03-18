@@ -1,6 +1,6 @@
 FROM docker-hub.registry.condi.me/gentoo/portage as porttree
 
-FROM docker-hub.registry.condi.me/gentoo/stage3-amd64 as crossdev
+FROM docker-hub.registry.condi.me/applehq/gentoo-stage4 as crossdev
 
 ADD repo_name /var/db/repos/crossdev/profiles/repo_name
 ADD layout.conf /var/db/repos/crossdev/metadata/layout.conf
