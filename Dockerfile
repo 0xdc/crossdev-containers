@@ -1,6 +1,4 @@
-FROM docker-hub.registry.condi.me/gentoo/portage as porttree
-
-FROM docker-hub.registry.condi.me/applehq/gentoo-stage4 as crossdev
+FROM docker-image-import as crossdev
 
 ADD repo_name /var/db/repos/crossdev/profiles/repo_name
 ADD layout.conf /var/db/repos/crossdev/metadata/layout.conf
@@ -8,7 +6,7 @@ ADD crossdev.conf /etc/portage/repos.conf/
 
 ADD pull-build-kernel /usr/local/bin
 
-COPY --from=porttree /var/db/repos/gentoo /var/db/repos/gentoo
+RUN emerge-webrsync
 RUN emerge --update --oneshot /usr/lib*/python* --quiet-build
 RUN emerge --quiet-build --update crossdev bc u-boot-tools dtc dev-vcs/git flex bison
 ARG version=""
