@@ -39,7 +39,7 @@ else
 fi
 
 ### Enable Kernel Options
-for i in SQUASHFS NFS_FS NFS_V4; do
+for i in SQUASHFS CEPH_FS; do
 	if grep -q CONFIG_MODULES=y .config; then
 		./scripts/config -m $i
 	else
