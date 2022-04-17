@@ -39,12 +39,19 @@ else
 fi
 
 ### Enable Kernel Options
-for i in SWAP SQUASHFS CEPH_FS; do
-	if test "$i" != "SWAP" && grep -q CONFIG_MODULES=y .config; then
-		./scripts/config -m $i
-	else
-		./scripts/config -e $i
-	fi
+for i in SWAP SQUASHFS CEPH_FS IKCONFIG IKCONFIG_PROC; do
+	case "$i" in
+	SWAP|IKCONFIG*)
+			./scripts/config -e $i
+			;;
+	*)
+		if egrep -q '^CONFIG_MODULES=y$' .config; then
+			./scripts/config -m $i
+		else
+			./scripts/config -e $i
+		fi
+		;;
+	esac
 done
 make olddefconfig
 # These appear after enabling the previous set of options
