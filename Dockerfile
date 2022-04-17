@@ -1,4 +1,4 @@
-FROM applehq/gentoo-stage3:latest as crossdev
+FROM applehq/roflmaOS-stage3:latest as crossdev
 
 ADD repo_name /var/db/repos/crossdev/profiles/repo_name
 ADD layout.conf /var/db/repos/crossdev/metadata/layout.conf

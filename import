@@ -1,7 +1,5 @@
 #!/bin/bash
 
-# run this from substrate builds dir
-
 set -ex
 
 for i in amd64:systemd:stage3 amd64:systemd:stage4; do
@@ -9,13 +7,13 @@ for i in amd64:systemd:stage3 amd64:systemd:stage4; do
 	build=$(cut -d: -f2 <<<"$i")
 	stage=$(cut -d: -f3 <<<"$i")
 
-	relative=$(readlink "$arch/$build/$stage-$arch-$build-latest.tar.bz2")
+	relative=$(curl -s "https://builds.roflmao.space/$arch/$build/latest-$stage-$arch-$build.txt")
 	bdate=$(dirname "$relative")
-	fullpath=$(readlink -f "$arch/$build/$stage-$arch-$build-latest.tar.bz2")
+	fullpath="https://builds.roflmao.space/$arch/$build/$relative"
 
-	docker image import "$fullpath" "applehq/gentoo-$stage:$arch-$bdate"
-	docker image tag "applehq/gentoo-$stage:$arch-$bdate" "applehq/gentoo-$stage:$arch-latest"
+	docker image import "$fullpath" "applehq/roflmaos-$stage:$arch-$bdate"
+	docker image tag "applehq/roflmaos-$stage:$arch-$bdate" "applehq/roflmaos-$stage:$arch-latest"
 
 	test "$arch" = "amd64" && \
-	docker image tag "applehq/gentoo-$stage:$arch-$bdate" "applehq/gentoo-$stage:latest"
+	docker image tag "applehq/roflmaos-$stage:$arch-$bdate" "applehq/roflmaos-$stage:latest"
 done
