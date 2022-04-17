@@ -1,0 +1,21 @@
+#!/bin/bash
+
+# run this from substrate builds dir
+
+set -ex
+
+for i in amd64:systemd:stage3 amd64:systemd:stage4; do
+	arch=$(cut -d: -f1 <<<"$i")
+	build=$(cut -d: -f2 <<<"$i")
+	stage=$(cut -d: -f3 <<<"$i")
+
+	relative=$(readlink "$arch/$build/$stage-$arch-$build-latest.tar.bz2")
+	bdate=$(dirname "$relative")
+	fullpath=$(readlink -f "$arch/$build/$stage-$arch-$build-latest.tar.bz2")
+
+	docker image import "$fullpath" "applehq/gentoo-$stage:$arch-$bdate"
+	docker image tag "applehq/gentoo-$stage:$arch-$bdate" "applehq/gentoo-$stage:$arch-latest"
+
+	test "$arch" = "amd64" && \
+	docker image tag "applehq/gentoo-$stage:$arch-$bdate" "applehq/gentoo-$stage:latest"
+done
