@@ -1,3 +1,3 @@
 #!/bin/bash
 
-docker image list | awk 'NR>1&&/crossdev/{print$1":"$2}' | sort -r | xargs -n1 docker push
+docker image push -a applehq/crossdev
