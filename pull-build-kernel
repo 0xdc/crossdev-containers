@@ -39,8 +39,8 @@ else
 fi
 
 ### Enable Kernel Options
-for i in SQUASHFS CEPH_FS; do
-	if grep -q CONFIG_MODULES=y .config; then
+for i in SWAP SQUASHFS CEPH_FS; do
+	if test "$i" != "SWAP" && grep -q CONFIG_MODULES=y .config; then
 		./scripts/config -m $i
 	else
 		./scripts/config -e $i
