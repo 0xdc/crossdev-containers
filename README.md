@@ -11,15 +11,8 @@ variety of compiler versions to keep code compatible.
 Targets
 -------
 
-We target armv7a(hardfloat) and avr.
-We use the following stable versions of gcc:
-
-	4.9.4
-	5.4.0-r4
-	6.4.0-r1
-	7.3.0-r3
-	8.2.0-r6
-	stable (8.3.0)
+We target armv7a(hardfloat), arm64(aarch64) and avr.
+We build against the stable versions of gcc in the gentoo portage tree.
 
 Specifically, the following targets are known to work on the following applications:
 
@@ -30,8 +23,8 @@ Specifically, the following targets are known to work on the following applicati
 
 All other targets are there to test the version of gcc with the intended application.
 
-For some reason, glibc-2.28-r6 only builds with gcc-8.2.0-r6, so older gcc
-versions use the older glibc-2.27-r6.
+Older versions are kept as tags on Docker Hub.
+
 
 pull-build-kernel (arm)
 -----------------
