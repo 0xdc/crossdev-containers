@@ -1,3 +1,0 @@
-#!/bin/bash
-
-docker image push -a applehq/crossdev
