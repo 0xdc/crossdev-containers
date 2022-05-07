@@ -39,7 +39,15 @@ else
 fi
 
 ### Enable Kernel Options
-for i in SWAP SQUASHFS CEPH_FS IKCONFIG IKCONFIG_PROC; do
+enable_opts=(
+	SWAP
+	SQUASHFS
+	CEPH_FS
+	IKCONFIG
+	SECCOMP
+	NAMESPACES
+)
+for i in ${enable_opts[*]}; do
 	case "$i" in
 	SWAP|IKCONFIG*)
 			./scripts/config -e $i
@@ -54,8 +62,13 @@ for i in SWAP SQUASHFS CEPH_FS IKCONFIG IKCONFIG_PROC; do
 	esac
 done
 make olddefconfig
-# These appear after enabling the previous set of options
-for i in SQUASHFS_LZO SQUASHFS_XZ; do
+enable_opts=(
+	# These appear after enabling the previous set of options
+	SQUASHFS_LZO
+	SQUASHFS_XZ
+	IKCONFIG_PROC
+)
+for i in ${enable_opts[*]}; do
 	./scripts/config -e $i
 done
 
