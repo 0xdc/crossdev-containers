@@ -49,7 +49,7 @@ enable_opts=(
 )
 for i in ${enable_opts[*]}; do
 	case "$i" in
-	SWAP|IKCONFIG*)
+	SWAP|IKCONFIG*|NAMESPACES|SECCOMP)
 			./scripts/config -e $i
 			;;
 	*)
@@ -75,5 +75,5 @@ done
 make $IMAGE dtbs LOADADDR=0x8000 -j$(nproc)
 if grep -q CONFIG_MODULES=y .config; then
 	make modules -j$(nproc)
-	make INSTALL_MOD_PATH="$(pwd)" modules_install
+	make INSTALL_MOD_PATH="$(pwd)/tar-install" modules_install
 fi
