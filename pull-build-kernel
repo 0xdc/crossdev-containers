@@ -39,21 +39,45 @@ else
 fi
 
 ### Enable Kernel Options
-for i in SQUASHFS NFS_FS NFS_V4; do
-	if grep -q CONFIG_MODULES=y .config; then
-		./scripts/config -m $i
-	else
-		./scripts/config -e $i
-	fi
+enable_opts=(
+	SWAP
+	SQUASHFS
+	CEPH_FS
+	IKCONFIG
+	SECCOMP
+	NAMESPACES
+)
+for i in ${enable_opts[*]}; do
+	case "$i" in
+	SWAP|IKCONFIG*|NAMESPACES|SECCOMP)
+			./scripts/config -e $i
+			;;
+	*)
+		if egrep -q '^CONFIG_MODULES=y$' .config; then
+			./scripts/config -m $i
+		else
+			./scripts/config -e $i
+		fi
+		;;
+	esac
 done
 make olddefconfig
-# These appear after enabling the previous set of options
-for i in SQUASHFS_LZO SQUASHFS_XZ; do
+enable_opts2=(
+	# These appear after enabling the previous set of options
+	SQUASHFS_LZO
+	SQUASHFS_XZ
+	IKCONFIG_PROC
+)
+for i in ${enable_opts2[*]}; do
 	./scripts/config -e $i
 done
 
 make $IMAGE dtbs LOADADDR=0x8000 -j$(nproc)
 if grep -q CONFIG_MODULES=y .config; then
 	make modules -j$(nproc)
-	make INSTALL_MOD_PATH="$(pwd)" modules_install
+	make INSTALL_MOD_PATH="$(pwd)/tar-install" modules_install
 fi
+
+for i in ${enable_opts[*]} ${enable_opts2[*]}; do
+	grep "CONFIG_$i" .config
+done

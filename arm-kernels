@@ -22,9 +22,8 @@ RUNLIST=(
 	#stable:linux-5.4.y:zImage:exynos:arm
 
 	# parallella
-	stable:linux-4.19.y:uImage:multi_v7:arm
-	stable:linux-5.4.y:uImage:multi_v7:arm
-	parallella:parallella-linux-2019.1:uImage:parallella:arm
+	stable:linux-5.15.y:uImage:multi_v7:arm
+	#parallella:parallella-linux-2019.1:uImage:parallella:arm
 )
 
 for i in ${RUNLIST[*]}; do
@@ -36,10 +35,13 @@ for i in ${RUNLIST[*]}; do
 
 	docker run --rm -i \
 		--mount "type=volume,source=$repo-$defconfig-$version-$branch,dst=/usr/src/linux" \
-		applehq/crossdev:${version} \
+		--mount "type=bind,source=$(readlink -f $(dirname $0))/pull-build-kernel,dst=/usr/local/bin/pull-build-kernel,readonly" \
+		docker-hub.registry.condi.me/applehq/crossdev:${version} \
 		pull-build-kernel \
 		-g ${u[$repo]} \
 		-b $branch \
 		-i $image \
 		-d $defconfig
 done
+
+docker volume list
