@@ -62,13 +62,13 @@ for i in ${enable_opts[*]}; do
 	esac
 done
 make olddefconfig
-enable_opts=(
+enable_opts2=(
 	# These appear after enabling the previous set of options
 	SQUASHFS_LZO
 	SQUASHFS_XZ
 	IKCONFIG_PROC
 )
-for i in ${enable_opts[*]}; do
+for i in ${enable_opts2[*]}; do
 	./scripts/config -e $i
 done
 
@@ -77,3 +77,7 @@ if grep -q CONFIG_MODULES=y .config; then
 	make modules -j$(nproc)
 	make INSTALL_MOD_PATH="$(pwd)/tar-install" modules_install
 fi
+
+for i in ${enable_opts[*]} ${enable_opts2[*]}; do
+	grep "CONFIG_$i" .config
+done
