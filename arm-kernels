@@ -34,6 +34,7 @@ for i in ${RUNLIST[*]}; do
 	version=$(awk -F: '{print$5}' <<<$i)
 
 	docker run --rm -i \
+		--workdir /usr/src/linux \
 		--mount "type=volume,source=$repo-$defconfig-$version-$branch,dst=/usr/src/linux" \
 		--mount "type=bind,source=$(readlink -f $(dirname $0))/pull-build-kernel,dst=/usr/local/bin/pull-build-kernel,readonly" \
 		applehq/crossdev:${version} \
