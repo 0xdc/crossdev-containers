@@ -42,6 +42,7 @@ fi
 enable_opts=(
 	SWAP
 	SQUASHFS
+	BTRFS_FS
 	CEPH_FS
 	IKCONFIG
 	SECCOMP
@@ -49,7 +50,7 @@ enable_opts=(
 )
 for i in ${enable_opts[*]}; do
 	case "$i" in
-	SWAP|IKCONFIG*|NAMESPACES|SECCOMP)
+	SWAP|IKCONFIG*|NAMESPACES|SECCOMP|BTRFS_FS)
 			./scripts/config -e $i
 			;;
 	*)
@@ -67,6 +68,7 @@ enable_opts2=(
 	SQUASHFS_LZO
 	SQUASHFS_XZ
 	IKCONFIG_PROC
+	CEPH_LIB_USE_DNS_RESOLVER
 )
 for i in ${enable_opts2[*]}; do
 	./scripts/config -e $i
