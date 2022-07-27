@@ -17,3 +17,5 @@ ARG arch="arm"
 ENV ARCH="${arch}"
 ENV CROSS_COMPILE="${tuple}-"
 ENV VERSION="${version}"
+
+CMD /bin/bash
