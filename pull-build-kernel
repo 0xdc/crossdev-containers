@@ -24,9 +24,9 @@ if test -d $SRCDIR/.git; then
 	git pull --ff-only $GIT_REPO $BRANCH
 else
 	if test "$BRANCH"; then
-		git clone -b $BRANCH $GIT_REPO $SRCDIR
+		git clone -b $BRANCH $GIT_REPO $SRCDIR --depth 1
 	else
-		git clone $GIT_REPO $SRCDIR
+		git clone $GIT_REPO $SRCDIR --depth 1
 	fi
 	pushd $SRCDIR
 fi
