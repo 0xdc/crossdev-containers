@@ -1,7 +1,5 @@
 #!/bin/bash
 
-set -ex
-
 Ximages=(
 	amd64:systemd:stage3
 	amd64:systemd:stage4
