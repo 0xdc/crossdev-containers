@@ -6,6 +6,7 @@ export DTB  ?= zynq-parallella.dtb
 export FPGA ?= support/parabuntu/fpga_bitfiles
 SSH_KEY ?= support/root_overlay/root/.ssh/authorized_keys
 WPA ?= omaha/root_overlay/etc/wpa_supplicant/wpa_supplicant.conf
+MRVL ?= /lib/firmware/mrvl/sd8797_uapsta.bin
 NECESSARY = \
 	$(KDIR)/arch/arm/boot/uImage \
 	$(KDIR)/arch/arm/boot/dts/$(DTB) \
@@ -19,7 +20,7 @@ NECESSARY = \
 parallella-$(VERSION)-$(ZYNQ).img: ella-rootfs.tar.bz2 $(NECESSARY) $(ELLA_RO) $(SSH_KEY)
 	./.gfwrapper.sh $@ $< support/root_overlay || rm -f $@
 
-omaha.img: chromebook-rootfs.tar.bz2 omaha.kpart /lib/firmware/mrvl/sd8797_uapsta.bin $(NECESSARY) $(OMAHA_RO) $(WPA)
+omaha.img: chromebook-rootfs.tar.bz2 omaha.kpart $(MRVL) $(NECESSARY) $(OMAHA_RO) $(WPA)
 	./.gfomaha.sh $@ $< omaha/root_overlay || rm -f $@
 
 stage3-armv7a_hardfp-latest.tar.bz2:

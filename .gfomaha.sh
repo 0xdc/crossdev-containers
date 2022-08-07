@@ -27,7 +27,7 @@ gf=$(which guestfish)
 	copy-file-to-device /boot/omaha.kpart /dev/sda1 : \
 	copy-file-to-device /boot/omaha.kpart /dev/sda2 : \
 	mkdir-p /lib/firmware/mrvl : \
-	copy-in /lib/firmware/mrvl/sd8797_uapsta.bin /lib/firmware/mrvl : \
+	-copy-in /lib/firmware/mrvl/sd8797_uapsta.bin /lib/firmware/mrvl : \
 	copy-in ${KDIR}/tar-install/lib /
 
 cgpt add -i 1 -T 15 -P 15 -S 1 $1
