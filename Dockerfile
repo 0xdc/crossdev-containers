@@ -6,7 +6,7 @@ ADD crossdev.conf /etc/portage/repos.conf/
 
 RUN emerge-webrsync
 RUN emerge --update --oneshot /usr/lib*/python* --quiet-build
-RUN emerge --quiet-build --update crossdev bc u-boot-tools dtc dev-vcs/git flex bison
+RUN emerge --quiet-build --update crossdev sys-devel/bc u-boot-tools dtc dev-vcs/git flex bison
 ARG version=""
 ARG tuple="armv7a-unknown-linux-gnueabihf"
 RUN crossdev -t $tuple -S --gcc $version
@@ -20,10 +20,10 @@ ARG CROSS="cross-${tuple}/binutils cross-${tuple}/gcc cross-${tuple}/glibc cross
 ARG BASE="app-shells/bash dev-vcs/git sys-libs/glibc"
 ARG PACKAGES="sys-apps/coreutils sys-apps/gawk sys-apps/grep sys-apps/sed sys-devel/bc sys-devel/gcc sys-devel/make sys-devel/patch"
 
-ARG DEPS1="app-arch/gzip app-arch/xz-utils app-misc/ca-certificates"
+ARG DEPS1="app-arch/gzip app-arch/xz-utils app-arch/zstd app-misc/ca-certificates"
 ARG DEPS2="dev-embedded/u-boot-tools dev-lang/perl"
 ARG DEPS3="dev-libs/gmp dev-libs/libpcre dev-libs/libpcre2 dev-libs/mpc dev-libs/mpfr dev-libs/openssl"
-ARG DEPS4="net-libs/nghttp2 net-misc/curl"
+ARG DEPS4="net-dns/c-ares net-libs/nghttp2 net-misc/curl"
 ARG DEPS5="sys-apps/acl sys-apps/attr sys-apps/diffutils sys-apps/dtc sys-apps/findutils sys-apps/kmod"
 ARG DEPS6="sys-devel/binutils sys-devel/bison sys-devel/flex sys-devel/gettext sys-devel/m4"
 ARG DEPS7="sys-kernel/linux-headers sys-libs/libxcrypt sys-libs/ncurses sys-libs/readline sys-libs/zlib"

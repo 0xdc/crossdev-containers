@@ -6,6 +6,8 @@ Ximages=(
 )
 
 Aimages=(
+	#armv7a:systemd:stage3
+	#armv7a:systemd:stage4
 	armv7a:hardfp:stage3
 	armv7a:hardfp:stage4
 )
@@ -21,6 +23,7 @@ for i in ${Ximages[*]}; do
 
 	docker image import "$fullpath" "applehq/roflmaos-$stage:$arch-$bdate"
 	docker image tag "applehq/roflmaos-$stage:$arch-$bdate" "applehq/roflmaos-$stage:$arch-latest"
+	docker image tag "applehq/roflmaos-$stage:$arch-$bdate" "applehq/roflmaos-$stage:latest"
 done
 
 for i in ${Aimages[*]}; do
