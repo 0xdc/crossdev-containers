@@ -5,8 +5,10 @@ ADD layout.conf /var/db/repos/crossdev/metadata/layout.conf
 ADD crossdev.conf /etc/portage/repos.conf/
 
 RUN emerge-webrsync
+RUN (qlist -IC 'virtual/perl*'; qlist -IC 'dev-perl/*') | xargs emerge --oneshot --quiet-build dev-lang/perl texinfo po4a
 RUN emerge --update --oneshot /usr/lib*/python* --quiet-build
 RUN emerge --quiet-build --update crossdev sys-devel/bc u-boot-tools dtc dev-vcs/git flex bison
+
 ARG version=""
 ARG tuple="armv7a-unknown-linux-gnueabihf"
 RUN crossdev -t $tuple -S --gcc $version
@@ -41,4 +43,5 @@ ARG tuple="armv7a-unknown-linux-gnueabihf"
 ENV ARCH="${arch}"
 ENV CROSS_COMPILE="${tuple}-"
 
+ADD pull-build-kernel /usr/local/bin
 CMD /bin/bash
