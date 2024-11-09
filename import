@@ -6,10 +6,13 @@ Ximages=(
 )
 
 Aimages=(
-	#armv7a:systemd:stage3
-	#armv7a:systemd:stage4
 	armv7a:hardfp:stage3
 	armv7a:hardfp:stage4
+)
+
+Simages=(
+	armv7a:systemd:stage3
+	armv7a:systemd:stage4
 )
 
 for i in ${Ximages[*]}; do
@@ -32,6 +35,19 @@ for i in ${Aimages[*]}; do
 	stage=$(cut -d: -f3 <<<"$i")
 
 	relative=$(curl -s "https://builds.os.0xdc.io/$arch/$build/latest-$stage-${arch}_${build}.txt")
+	bdate=$(dirname "$relative")
+	fullpath="https://builds.os.0xdc.io/$arch/$build/$relative"
+
+	docker image import "$fullpath" "applehq/roflmaos-$stage:$arch-$bdate"
+	docker image tag "applehq/roflmaos-$stage:$arch-$bdate" "applehq/roflmaos-$stage:$arch-latest"
+done
+
+for i in ${Simages[*]}; do
+	arch=$(cut -d: -f1 <<<"$i")
+	build=$(cut -d: -f2 <<<"$i")
+	stage=$(cut -d: -f3 <<<"$i")
+
+	relative=$(curl -s "https://builds.os.0xdc.io/$arch/$build/latest-$stage-${arch}_hardfp-${build}.txt")
 	bdate=$(dirname "$relative")
 	fullpath="https://builds.os.0xdc.io/$arch/$build/$relative"
 
