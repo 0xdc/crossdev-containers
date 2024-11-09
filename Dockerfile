@@ -43,5 +43,4 @@ ARG tuple="armv7a-unknown-linux-gnueabihf"
 ENV ARCH="${arch}"
 ENV CROSS_COMPILE="${tuple}-"
 
-ADD pull-build-kernel /usr/local/bin
 CMD /bin/bash
