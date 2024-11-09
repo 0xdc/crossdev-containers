@@ -15,7 +15,7 @@ RUN crossdev -t $tuple -S --gcc $version
 RUN emerge --depclean --with-bdeps=n
 RUN rm -fr /var/db/repos/gentoo
 
-RUN qlist -IC | xargs env FEATURES=-binpkg-multi-instance quickpkg --include-unmodified-config=y
+RUN qlist -IC | xargs env BINPKG_FORMAT=xpak FEATURES=-binpkg-multi-instance quickpkg --include-unmodified-config=y
 RUN mkdir -p /tmp/stage1root/var/db/pkg /tmp/stage1root/tmp
 
 ARG CROSS="cross-${tuple}/binutils cross-${tuple}/gcc cross-${tuple}/glibc cross-${tuple}/linux-headers"
