@@ -33,10 +33,10 @@ ARG DEPS7="sys-kernel/linux-headers sys-libs/libxcrypt sys-libs/ncurses sys-libs
 RUN QMERGE=1 qmerge --root /tmp/stage1root --update --yes --nodeps --quiet $PACKAGES $CROSS $BASE $DEPS1 $DEPS2 $DEPS3 $DEPS4 $DEPS5 $DEPS6 $DEPS7
 RUN update-ca-certificates --root /tmp/stage1root
 RUN cp -r /etc/ld.so.conf /etc/ld.so.conf.d/ /tmp/stage1root/etc
+RUN ldconfig -r /tmp/stage1root
 
 FROM scratch
 COPY --from=crossdev /tmp/stage1root /
-RUN ldconfig
 
 ARG arch="arm"
 ARG tuple="armv7a-unknown-linux-gnueabihf"
