@@ -2,8 +2,10 @@
 
 set -e
 
+SNAPSHOT="$1"
+
 image_build() {
-	docker image inspect "$1" || docker image build . -t "$@"
+	docker image inspect "$1" || docker image build . -t "$@" ${SNAPSHOT:+--build-arg snapshot=$SNAPSHOT}
 }
 
 for i in $(./gccv.py); do

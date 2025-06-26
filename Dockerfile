@@ -1,10 +1,14 @@
+ARG snapshot=latest
+FROM gentoo/portage:$snapshot as portage
+
 FROM applehq/roflmaos-stage3:latest as crossdev
 
 ADD repo_name /var/db/repos/crossdev/profiles/repo_name
 ADD layout.conf /var/db/repos/crossdev/metadata/layout.conf
 ADD crossdev.conf /etc/portage/repos.conf/
 
-RUN emerge-webrsync
+COPY --from=portage /var/db/repos/gentoo /var/db/repos/gentoo
+
 RUN (qlist -IC 'virtual/perl*'; qlist -IC 'dev-perl/*') | xargs emerge --oneshot --quiet-build dev-lang/perl sys-apps/texinfo app-text/po4a
 RUN emerge --update --oneshot /usr/lib*/python* --quiet-build
 RUN emerge --quiet-build --update sys-devel/crossdev sys-devel/bc dev-embedded/u-boot-tools sys-apps/dtc dev-vcs/git sys-devel/flex sys-devel/bison
