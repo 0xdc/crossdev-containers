@@ -1,5 +1,7 @@
 #!/bin/bash
 
+domain=${1:-builds.roflmao.space}
+
 Ximages=(
 	amd64:systemd:stage3
 	amd64:systemd:stage4
@@ -20,9 +22,9 @@ for i in ${Ximages[*]}; do
 	build=$(cut -d: -f2 <<<"$i")
 	stage=$(cut -d: -f3 <<<"$i")
 
-	relative=$(curl -s "https://builds.os.0xdc.io/$arch/$build/latest-$stage-$arch-$build.txt")
+	relative=$(curl -s "https://$domain/$arch/$build/latest-$stage-$arch-$build.txt")
 	bdate=$(dirname "$relative")
-	fullpath="https://builds.os.0xdc.io/$arch/$build/$relative"
+	fullpath="https://$domain/$arch/$build/$relative"
 
 	docker image import "$fullpath" "applehq/roflmaos-$stage:$arch-$bdate"
 	docker image tag "applehq/roflmaos-$stage:$arch-$bdate" "applehq/roflmaos-$stage:$arch-latest"
@@ -34,9 +36,9 @@ for i in ${Aimages[*]}; do
 	build=$(cut -d: -f2 <<<"$i")
 	stage=$(cut -d: -f3 <<<"$i")
 
-	relative=$(curl -s "https://builds.os.0xdc.io/$arch/$build/latest-$stage-${arch}_${build}.txt")
+	relative=$(curl -s "https://$domain/$arch/$build/latest-$stage-${arch}_${build}.txt")
 	bdate=$(dirname "$relative")
-	fullpath="https://builds.os.0xdc.io/$arch/$build/$relative"
+	fullpath="https://$domain/$arch/$build/$relative"
 
 	docker image import "$fullpath" "applehq/roflmaos-$stage:$arch-$bdate"
 	docker image tag "applehq/roflmaos-$stage:$arch-$bdate" "applehq/roflmaos-$stage:$arch-latest"
@@ -47,9 +49,9 @@ for i in ${Simages[*]}; do
 	build=$(cut -d: -f2 <<<"$i")
 	stage=$(cut -d: -f3 <<<"$i")
 
-	relative=$(curl -s "https://builds.os.0xdc.io/$arch/$build/latest-$stage-${arch}_hardfp-${build}.txt")
+	relative=$(curl -s "https://$domain/$arch/$build/latest-$stage-${arch}_hardfp-${build}.txt")
 	bdate=$(dirname "$relative")
-	fullpath="https://builds.os.0xdc.io/$arch/$build/$relative"
+	fullpath="https://$domain/$arch/$build/$relative"
 
 	docker image import "$fullpath" "applehq/roflmaos-$stage:$arch-$bdate"
 	docker image tag "applehq/roflmaos-$stage:$arch-$bdate" "applehq/roflmaos-$stage:$arch-latest"
