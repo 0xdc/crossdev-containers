@@ -17,7 +17,6 @@ ARG version=""
 ARG tuple="armv7a-unknown-linux-gnueabihf"
 RUN crossdev -t $tuple -S --gcc $version
 RUN emerge --depclean --with-bdeps=n
-RUN rm -fr /var/db/repos/gentoo
 
 RUN qlist -IC | xargs env BINPKG_FORMAT=xpak FEATURES=-binpkg-multi-instance quickpkg --include-unmodified-config=y
 RUN mkdir -p /tmp/stage1root/var/db/pkg /tmp/stage1root/tmp
