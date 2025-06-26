@@ -9,7 +9,7 @@ ADD crossdev.conf /etc/portage/repos.conf/
 
 COPY --from=portage /var/db/repos/gentoo /var/db/repos/gentoo
 
-RUN (qlist -IC 'virtual/perl*'; qlist -IC 'dev-perl/*') | xargs emerge --oneshot --quiet-build dev-lang/perl sys-apps/texinfo app-text/po4a
+RUN qlist -IC 'virtual/perl*' 'dev-perl/*' dev-lang/perl sys-apps/texinfo app-text/po4a | xargs emerge --oneshot --quiet-build
 RUN emerge --update --oneshot /usr/lib*/python* --quiet-build
 RUN emerge --quiet-build --update sys-devel/crossdev sys-devel/bc dev-embedded/u-boot-tools sys-apps/dtc dev-vcs/git sys-devel/flex sys-devel/bison
 
