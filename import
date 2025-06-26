@@ -17,6 +17,10 @@ Simages=(
 	armv7a:systemd:stage4
 )
 
+image_import() {
+	docker image inspect "$2" || docker image import "$@"
+}
+
 for i in ${Ximages[*]}; do
 	arch=$(cut -d: -f1 <<<"$i")
 	build=$(cut -d: -f2 <<<"$i")
@@ -26,7 +30,7 @@ for i in ${Ximages[*]}; do
 	bdate=$(dirname "$relative")
 	fullpath="https://$domain/$arch/$build/$relative"
 
-	docker image import "$fullpath" "applehq/roflmaos-$stage:$arch-$bdate"
+	image_import "$fullpath" "applehq/roflmaos-$stage:$arch-$bdate"
 	docker image tag "applehq/roflmaos-$stage:$arch-$bdate" "applehq/roflmaos-$stage:$arch-latest"
 	docker image tag "applehq/roflmaos-$stage:$arch-$bdate" "applehq/roflmaos-$stage:latest"
 done
@@ -40,7 +44,7 @@ for i in ${Aimages[*]}; do
 	bdate=$(dirname "$relative")
 	fullpath="https://$domain/$arch/$build/$relative"
 
-	docker image import "$fullpath" "applehq/roflmaos-$stage:$arch-$bdate"
+	image_import "$fullpath" "applehq/roflmaos-$stage:$arch-$bdate"
 	docker image tag "applehq/roflmaos-$stage:$arch-$bdate" "applehq/roflmaos-$stage:$arch-latest"
 done
 
@@ -53,6 +57,6 @@ for i in ${Simages[*]}; do
 	bdate=$(dirname "$relative")
 	fullpath="https://$domain/$arch/$build/$relative"
 
-	docker image import "$fullpath" "applehq/roflmaos-$stage:$arch-$bdate"
+	image_import "$fullpath" "applehq/roflmaos-$stage:$arch-$bdate"
 	docker image tag "applehq/roflmaos-$stage:$arch-$bdate" "applehq/roflmaos-$stage:$arch-latest"
 done
