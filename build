@@ -2,10 +2,14 @@
 
 set -e
 
+image_build() {
+	docker image inspect "$1" || docker image build . -t "$@"
+}
+
 for i in $(./gccv.py); do
-	docker image build . -t applehq/crossdev:arm-$i   --build-arg version=$i
-	docker image build . -t applehq/crossdev:avr-$i   --build-arg version=$i --build-arg tuple=avr
-	docker image build . -t applehq/crossdev:arm64-$i --build-arg version=$i --build-arg tuple=aarch64-unknown-linux-gnu --build-arg arch=arm64
+	image_build  applehq/crossdev:arm-$i   --build-arg version=$i
+	image_build  applehq/crossdev:avr-$i   --build-arg version=$i --build-arg tuple=avr
+	image_build  applehq/crossdev:arm64-$i --build-arg version=$i --build-arg tuple=aarch64-unknown-linux-gnu --build-arg arch=arm64
 done
 
 docker tag applehq/crossdev:arm-$i   applehq/crossdev:arm
