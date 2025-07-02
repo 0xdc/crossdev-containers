@@ -11,11 +11,13 @@ COPY --from=portage /var/db/repos/gentoo /var/db/repos/gentoo
 
 RUN --mount=type=cache,dst=/var/cache/binpkgs --mount=type=cache,dst=/var/cache/distfiles qlist -IC 'virtual/perl*' 'dev-perl/*' dev-lang/perl sys-apps/texinfo app-text/po4a | xargs emerge --oneshot --quiet-build --buildpkg --usepkg=y
 RUN --mount=type=cache,dst=/var/cache/binpkgs --mount=type=cache,dst=/var/cache/distfiles emerge --update --oneshot /usr/lib*/python* --quiet-build --buildpkg --usepkg=y
-RUN --mount=type=cache,dst=/var/cache/binpkgs --mount=type=cache,dst=/var/cache/distfiles emerge --quiet-build --update sys-devel/crossdev sys-devel/bc dev-embedded/u-boot-tools sys-apps/dtc dev-vcs/git sys-devel/flex sys-devel/bison --buildpkg --usepkg=y
+RUN --mount=type=cache,dst=/var/cache/binpkgs --mount=type=cache,dst=/var/cache/distfiles emerge --quiet-build --update sys-devel/crossdev sys-devel/bc dev-embedded/u-boot-tools sys-apps/dtc dev-vcs/git sys-devel/flex sys-devel/bison dev-util/ccache --buildpkg --usepkg=y
 
 ARG version=""
 ARG tuple="armv7a-unknown-linux-gnueabihf"
-RUN crossdev -t $tuple -S --gcc $version
+ADD ccache.env /etc/portage/env/ccache
+RUN mkdir /etc/portage/package.env && echo cross-${tuple}/* ccache > /etc/portage/package.env/cross-ccache
+RUN --mount=type=cache,dst=/var/tmp/portage/ccache crossdev -t $tuple -S --gcc $version
 RUN emerge --depclean --with-bdeps=n
 
 RUN qlist -IC | xargs env BINPKG_FORMAT=xpak FEATURES=-binpkg-multi-instance quickpkg --include-unmodified-config=y
