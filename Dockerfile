@@ -18,7 +18,13 @@ ARG version=""
 ARG tuple="armv7a-unknown-linux-gnueabihf"
 ADD ccache.env /etc/portage/env/ccache
 RUN mkdir /etc/portage/package.env && echo cross-${tuple}/* ccache > /etc/portage/package.env/cross-ccache
-RUN --mount=type=cache,dst=/var/tmp/ccache crossdev -t $tuple -S --gcc $version
+
+RUN --mount=type=cache,dst=/var/tmp/ccache crossdev -t $tuple -S --gcc $version --stage0 --show-fail-log
+RUN --mount=type=cache,dst=/var/tmp/ccache crossdev -t $tuple -S --gcc $version --stage1 --show-fail-log
+RUN --mount=type=cache,dst=/var/tmp/ccache crossdev -t $tuple -S --gcc $version --stage2 --show-fail-log
+RUN --mount=type=cache,dst=/var/tmp/ccache crossdev -t $tuple -S --gcc $version --stage3 --show-fail-log
+RUN --mount=type=cache,dst=/var/tmp/ccache crossdev -t $tuple -S --gcc $version --stage4 --show-fail-log
+
 RUN emerge --depclean --with-bdeps=n
 
 RUN qlist -IC | xargs env BINPKG_FORMAT=xpak FEATURES=-binpkg-multi-instance quickpkg --include-unmodified-config=y
