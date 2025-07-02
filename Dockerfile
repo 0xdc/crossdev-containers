@@ -9,9 +9,10 @@ ADD crossdev.conf /etc/portage/repos.conf/
 
 COPY --from=portage /var/db/repos/gentoo /var/db/repos/gentoo
 
-RUN --mount=type=cache,dst=/var/cache/binpkgs --mount=type=cache,dst=/var/cache/distfiles qlist -IC 'virtual/perl*' 'dev-perl/*' dev-lang/perl sys-apps/texinfo app-text/po4a | xargs emerge --oneshot --quiet-build --buildpkg --usepkg=y
-RUN --mount=type=cache,dst=/var/cache/binpkgs --mount=type=cache,dst=/var/cache/distfiles emerge --update --oneshot /usr/lib*/python* --quiet-build --buildpkg --usepkg=y
-RUN --mount=type=cache,dst=/var/cache/binpkgs --mount=type=cache,dst=/var/cache/distfiles emerge --quiet-build --update sys-devel/crossdev sys-devel/bc dev-embedded/u-boot-tools sys-apps/dtc dev-vcs/git sys-devel/flex sys-devel/bison dev-util/ccache --buildpkg --usepkg=y
+ARG EMERGE_DEFAULT_OPTS="--quiet-build --buildpkg --usepkg=y"
+RUN --mount=type=cache,dst=/var/cache/binpkgs --mount=type=cache,dst=/var/cache/distfiles qlist -IC 'virtual/perl*' 'dev-perl/*' dev-lang/perl sys-apps/texinfo app-text/po4a | xargs emerge --oneshot
+RUN --mount=type=cache,dst=/var/cache/binpkgs --mount=type=cache,dst=/var/cache/distfiles emerge --update --oneshot /usr/lib*/python*
+RUN --mount=type=cache,dst=/var/cache/binpkgs --mount=type=cache,dst=/var/cache/distfiles emerge --update sys-devel/crossdev sys-devel/bc dev-embedded/u-boot-tools sys-apps/dtc dev-vcs/git sys-devel/flex sys-devel/bison dev-util/ccache
 
 ARG version=""
 ARG tuple="armv7a-unknown-linux-gnueabihf"
